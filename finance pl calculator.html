@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Emi Calculation</title>
+
+    <!-- Bootstrap for css-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Bootstrap for js-->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+<style type="text/css">
+body {
+  padding-top: 50px;
+  background-color: grey;
+
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+h1 { 
+text-shadow: 1px 1px 0 black, 
+                2px 2px 0 black;
+}
+tr:hover {
+          background-color: #ffff99;
+          color: black;
+        }
+</style>
+
+  </head>
+
+  <body>
+    <div class="container">
+
+<h1> Personal Loan Calculator</h1>
+<div class="row">
+    <div class="starter-template col-sm-8">
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label for="intrate" class="col-sm-2 control-label">Loan Amount</label>
+	<div class="col-sm-10">
+		<input type="number" class="form-control" id="loanAmount" placeholder="Enter Loan Amount" min=1>
+	</div>
+  </div>
+  <div class="form-group">
+    <label for="loanAmount" class="col-sm-2 control-label">Interest</label>
+	<div class="col-sm-10">
+		<input type="number" class="form-control" id="interest" placeholder="Enter Interest " min=1>
+	</div>
+  </div>
+  <div class="form-group">
+    <label for="emiAmount" class="col-sm-2 control-label">Month</label>
+	<div class="col-sm-10">
+		<input type="number" class="form-control" id="month" placeholder="Enter time period" min=1>
+	</div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button onclick="return generateTable();" class="btn btn-success btn-lg">Calculate</button>
+    </div>
+  </div>
+</form>
+<div id="content">
+</div>
+<script type="text/javascript">
+function generateTable(){
+document.getElementById("content").innerHTML = "";
+var loanAmount=document.getElementById("loanAmount").value;
+var interest=document.getElementById("interest").value;
+var R=(interest/100)/12;
+R=R.toString();
+R=R.slice(0, (R.indexOf(".")) + 3 + 1);
+R=Number(R);
+var N=document.getElementById("month").value;
+if(loanAmount =="")
+{
+	alert("please enter the loan amount!...");
+}
+else if(interest == "")
+{
+	alert("please enter the monthly interest in percentage!...");
+}
+else if(N=="")
+{
+	alert("please enter the total months!...")
+}
+else
+{
+var f1=loanAmount*R;
+var f2=Math.pow((1+R),N);
+f2=f2.toString();
+f2=f2.slice(0, (f2.indexOf(".")) + 5+ 1);
+f2=Number(f2);
+var f3=Math.pow((1+R),N)-1;
+f3=f3.toString();
+f3=f3.slice(0, (f3.indexOf(".")) + 5+ 1);
+f3=Number(f3);
+var Payment=(f1*f2)/f3;
+Payment=Payment.toString();
+Payment=Payment.slice(0, (Payment.indexOf(".")) + 2+ 1);
+Payment=Number(Payment);
+var i=1;
+var balance=loanAmount;
+var content = "";
+var content1 = "";
+content += "<table class='table table-dark'>";
+content += "<tr style='background-color:red; color:white;'>";
+content += "<td>No<td/> <td>Payment Amount<td/> <td>Principal Amount<td/> <td>Interest Amount<td/> <td>Outstanding Balance<td/>";
+content += "<tr/>";
+while(N != 0 && balance>=0){
+	var f4=Math.pow((1+R),N);
+	f4=f4.toString();
+    f4=f4.slice(0, (f4.indexOf(".")) + 4+ 1);
+    f4=Number(f4);
+    var Principle = Payment/f4;
+    Principle=Principle.toString();
+    Principle=Principle.slice(0, (Principle.indexOf(".")) + 2+ 1);
+    Principle=Number(Principle);
+    var intr      = Payment - Principle;
+    intr=intr.toFixed(2);
+    intr=Number(intr);
+    balance=(intr/R);
+    balance=balance - Principle;
+    balance=balance.toFixed(2);
+    balance=Number(balance);
+	content += "<tr>";
+	content += "<td>"+i+"<td/>";
+	content += "<td>"+Payment+"<td/>";
+	content += "<td>"+Principle+"<td/>";
+	content += "<td>"+intr+"<td/>";
+	content += "<td>"+balance+"<td/>";
+	content += "<tr/>";
+	i=i+1;
+    N--;
+}
+content += "</table>";
+var div = document.createElement('div');
+div.innerHTML = content1 + content;
+document.getElementById('content').appendChild(div);
+}
+return false;
+}
+</script>
+      </div>
+<div class="col-sm-3 col-sm-offset-1">
+	<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- emi -->
+	<ins class="adsbygoogle"
+	     style="display:inline-block;width:160px;height:600px"
+	     data-ad-client="ca-pub-1493057699568324"
+	     data-ad-slot="8385666350"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div>
+</div>
+</div><!-- /.container -->
+</body>
+</html>
